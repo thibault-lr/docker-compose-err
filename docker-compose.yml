@@ -1,0 +1,25 @@
+version: "3"
+services:
+  package1:
+    container_name: package1
+    build:
+      context: ./package1
+      dockerfile: Dockerfile
+    volumes:
+      - ./package1:/package1
+  package2:
+    container_name: package2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    ports:
+      - 3001:3000
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+      - ./package1:/opt/app/node_modules/package1
+    depends_on:
+      - package1
